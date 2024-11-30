@@ -5,67 +5,108 @@ export const aIChatBotStyle: SxProps<Theme> = {
 	display: 'flex',
 	flexDirection: 'column',
 	height: '100vh',
-	padding: 2,
 	width: '100vw',
-	bgcolor: 'background.default',
-	color: 'text.primary'
+	overflow: 'hidden'
 };
 
 export const mainBoxStyle: SxProps<Theme> = {
 	display: 'flex',
 	flex: 1,
-	border: '1px solid',
-	borderColor: 'divider',
-	borderRadius: 1,
-	overflow: 'hidden'
+	flexDirection: { xs: 'column', md: 'row' },
+	overflow: 'hidden',
+	bgcolor: 'background.paper'
 };
 
 export const chatHeaderStyle: SxProps<Theme> = {
 	display: 'flex',
+	flexDirection: { xs: 'column', sm: 'row' },
 	alignItems: 'center',
 	justifyContent: 'space-between',
-	marginBottom: 2
+	gap: { xs: 1, sm: 2 },
+	padding: { xs: 1, sm: 2 },
+	borderBottom: 1,
+	borderColor: 'divider',
+	bgcolor: 'background.paper'
 };
 
 export const chatContainerStyle: SxProps<Theme> = {
-	width: '75%',
-	padding: 2,
+	width: { xs: '100%', md: '75%' },
+	height: { xs: 'calc(100vh - 140px)', md: '100%' },
 	display: 'flex',
-	flexDirection: 'column',
-	justifyContent: 'space-between'
+	flexDirection: 'column'
+};
+
+export const chatSidebarStyle: SxProps<Theme> = {
+	width: { xs: '100%', md: '25%' },
+	height: { xs: 'auto', md: '100%' },
+	display: { xs: 'none', md: 'block' },
+	borderRight: { xs: 0, md: 1 },
+	borderColor: 'divider',
+	bgcolor: 'background.paper',
+	overflow: 'auto'
 };
 
 export const chatSidebarMainStyle: SxProps<Theme> = {
-	height: '40px',
-	width: '100%',
+	padding: { xs: 1, sm: 2 },
 	cursor: 'pointer',
-	padding: '10px'
+	'&:hover': {
+		bgcolor: 'action.hover'
+	}
 };
 
 export const createChatSidebarChatStyle = (
 	currentChatIndex: number,
 	index: number
 ): SxProps<Theme> => ({
-	height: '40px',
-	width: '100%',
+	padding: { xs: 1, sm: 2 },
 	cursor: 'pointer',
-	padding: '10px',
 	color: currentChatIndex === index ? 'primary.contrastText' : 'text.primary',
-	bgcolor: currentChatIndex === index ? 'primary.main' : 'transparent',
+	bgcolor: currentChatIndex === index ? 'primary.main' : 'background.paper',
 	'&:hover': {
 		bgcolor: currentChatIndex === index ? 'primary.dark' : 'action.hover'
-	}
+	},
+	transition: 'all 0.2s ease'
 });
 
-export const messageListMainStyle = (message: MessageType): SxProps<Theme> => {
-	return {
-		display: 'flex',
-		justifyContent: message.type === 'user' ? 'flex-start' : 'flex-end',
-		mb: 1
-	};
+export const mobileDrawerStyle: SxProps<Theme> = {
+	display: { xs: 'block', md: 'none' },
+	'& .MuiDrawer-paper': {
+		width: '85%',
+		maxWidth: '300px'
+	}
 };
+
+export const messageListMainStyle = (message: MessageType): SxProps<Theme> => ({
+	display: 'flex',
+	justifyContent: message.type === 'user' ? 'flex-end' : 'flex-start',
+	padding: { xs: 0.5, sm: 1 }
+});
+
 export const messageListMainBoxStyle: SxProps<Theme> = {
 	flex: 1,
 	overflowY: 'auto',
-	marginBottom: 2
+	padding: { xs: 1, sm: 2 },
+	display: 'flex',
+	flexDirection: 'column',
+	gap: { xs: 1, sm: 2 }
+};
+
+export const messageBoxStyle = (isUser: boolean): SxProps<Theme> => ({
+	maxWidth: { xs: '85%', sm: '70%' },
+	padding: { xs: 1, sm: 2 },
+	borderRadius: 2,
+	bgcolor: isUser ? 'primary.main' : 'background.paper',
+	color: isUser ? 'primary.contrastText' : 'text.primary',
+	boxShadow: 1
+});
+
+export const inputSectionStyle: SxProps<Theme> = {
+	display: 'flex',
+	gap: { xs: 1, sm: 2 },
+	padding: { xs: 1, sm: 2 },
+	borderTop: 1,
+	borderColor: 'divider',
+	bgcolor: 'background.paper',
+	position: 'sticky',
+	bottom: 0
 };

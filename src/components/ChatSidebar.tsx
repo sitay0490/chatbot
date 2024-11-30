@@ -1,7 +1,13 @@
-import React from 'react';
-import { Box, Divider } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Divider, Drawer, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { ChatAction, ChatActionType } from '../reducers/chatReducer';
-import { chatSidebarMainStyle, createChatSidebarChatStyle } from '../styles';
+import {
+	chatSidebarStyle,
+	chatSidebarMainStyle,
+	createChatSidebarChatStyle,
+	mobileDrawerStyle
+} from '../styles';
 
 interface ChatSidebarProps {
 	chatList: { name: string }[];
@@ -10,33 +16,67 @@ interface ChatSidebarProps {
 }
 
 const ChatSidebar: React.FC<ChatSidebarProps> = ({ chatList, currentChatIndex, dispatch }) => {
-	const handleNewChat = () => {
-		dispatch({ type: ChatAction.ADD_NEW_CHAT });
+	const [mobileOpen, setMobileOpen] = useState(false);
+
+	const handleDrawerToggle = () => {
+		setMobileOpen(!mobileOpen);
 	};
 
-	const handleChatSelect = (index: number) => {
-		if (index !== currentChatIndex) {
-			dispatch({ type: ChatAction.SELECT_CHAT, payload: index });
-		}
-	};
-
-	return (
-		<Box sx={{ width: '25%', backgroundColor: '#e0e0e0' }}>
-			<div style={{ height: '40px', padding: '10px' }}>Previous Chats</div>
-			<Divider sx={{ marginTop: 1 }} />
-			<Box onClick={handleNewChat} sx={chatSidebarMainStyle}>
+	const sidebarContent = (
+		<>
+			<Box sx={{ p: 2 }}>Previous Chats</Box>
+			<Divider />
+			<Box
+				onClick={() => {
+					dispatch({ type: ChatAction.ADD_NEW_CHAT });
+					setMobileOpen(false);
+				}}
+				sx={chatSidebarMainStyle}
+			>
 				New Chat
 			</Box>
 			{chatList.map((chat, index) => (
 				<Box
 					key={index}
 					sx={createChatSidebarChatStyle(currentChatIndex, index)}
-					onClick={() => handleChatSelect(index)}
+					onClick={() => {
+						dispatch({ type: ChatAction.SELECT_CHAT, payload: index });
+						setMobileOpen(false);
+					}}
 				>
 					{chat.name}
 				</Box>
 			))}
-		</Box>
+		</>
+	);
+
+	return (
+		<>
+			<IconButton
+				sx={{
+					display: { xs: 'block', md: 'none' },
+					position: 'fixed',
+					top: 10,
+					left: 10,
+					zIndex: 1200
+				}}
+				onClick={handleDrawerToggle}
+			>
+				<MenuIcon />
+			</IconButton>
+
+			<Box sx={chatSidebarStyle}>{sidebarContent}</Box>
+
+			<Drawer
+				variant="temporary"
+				anchor="left"
+				open={mobileOpen}
+				onClose={handleDrawerToggle}
+				sx={mobileDrawerStyle}
+			>
+				{sidebarContent}
+			</Drawer>
+		</>
 	);
 };
 
