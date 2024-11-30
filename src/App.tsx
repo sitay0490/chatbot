@@ -1,10 +1,15 @@
 import React from 'react';
 import AIChatBot from './components/AIChatBot';
 
-const App: React.FC = () => {
+interface AppProps {
+	onThemeChange: (isDark: boolean) => void;
+	isDarkMode: boolean;
+}
+
+const App: React.FC<AppProps> = ({ onThemeChange, isDarkMode }) => {
 	return (
 		<div className="App">
-			<AIChatBot />
+			<AIChatBot onThemeChange={onThemeChange} isDarkMode={isDarkMode} />
 		</div>
 	);
 };

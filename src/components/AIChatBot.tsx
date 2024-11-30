@@ -1,9 +1,8 @@
 import React, { useReducer, useRef, useCallback } from 'react';
-import { Box, ThemeProvider, CssBaseline } from '@mui/material';
+import { Box } from '@mui/material';
 import ChatHeader from './ChatHeader';
 import ChatSidebar from './ChatSidebar';
 import ChatContainer from './ChatContainer';
-import { lightTheme, darkTheme } from '../theme';
 import {
 	chatReducer,
 	initialState,
@@ -15,14 +14,19 @@ import useScrollToBottom from '../hooks/useScrollToBottom';
 import { APIService } from '../services/APIService';
 import { aIChatBotStyle, mainBoxStyle } from '../styles';
 
-const AIChatBot: React.FC = () => {
+interface AIChatBotProps {
+	onThemeChange: (isDark: boolean) => void;
+	isDarkMode: boolean;
+}
+
+const AIChatBot: React.FC<AIChatBotProps> = ({ onThemeChange, isDarkMode }) => {
 	const [state, dispatch] = useReducer<React.Reducer<ChatState, ChatActionType>>(
 		chatReducer,
 		initialState
 	);
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
-	const { chatList, currentChatIndex, inputMessage, isLoading, isDarkMode } = state;
+	const { chatList, currentChatIndex, inputMessage, isLoading } = state;
 	const currentChat = chatList[currentChatIndex];
 	const messages = currentChat.messages.slice(-10).map((msg) => ({
 		role: msg.type === 'assistant' ? 'assistant' : (msg.type as 'user' | 'assistant' | 'system'),
@@ -59,27 +63,25 @@ const AIChatBot: React.FC = () => {
 	}, [inputMessage, currentChat.selectedService, messages, dispatch]);
 
 	return (
-		<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-			<CssBaseline />
-			<Box sx={aIChatBotStyle}>
-				<ChatHeader isDarkMode={isDarkMode} dispatch={dispatch} currentChat={currentChat} />
-				<Box sx={mainBoxStyle}>
-					<ChatSidebar
-						chatList={chatList}
-						currentChatIndex={currentChatIndex}
-						dispatch={dispatch}
-					/>
-					<ChatContainer
-						messages={currentChat.messages}
-						inputMessage={inputMessage}
-						dispatch={dispatch}
-						handleMessageSend={handleMessageSend}
-						isLoading={isLoading}
-						containerRef={containerRef}
-					/>
-				</Box>
+		<Box sx={aIChatBotStyle}>
+			<ChatHeader
+				dispatch={dispatch}
+				currentChat={currentChat}
+				onThemeChange={onThemeChange}
+				isDarkMode={isDarkMode}
+			/>
+			<Box sx={mainBoxStyle}>
+				<ChatSidebar chatList={chatList} currentChatIndex={currentChatIndex} dispatch={dispatch} />
+				<ChatContainer
+					messages={currentChat.messages}
+					inputMessage={inputMessage}
+					dispatch={dispatch}
+					handleMessageSend={handleMessageSend}
+					isLoading={isLoading}
+					containerRef={containerRef}
+				/>
 			</Box>
-		</ThemeProvider>
+		</Box>
 	);
 };
 

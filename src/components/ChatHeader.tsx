@@ -7,12 +7,18 @@ import { chatHeaderStyle } from '../styles';
 interface ChatHeaderProps {
 	dispatch: React.Dispatch<ChatActionType>;
 	currentChat: { selectedService: string };
+	onThemeChange: (isDark: boolean) => void;
 	isDarkMode: boolean;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ isDarkMode, dispatch, currentChat }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({
+	dispatch,
+	currentChat,
+	onThemeChange,
+	isDarkMode
+}) => {
 	const handleThemeToggle = () => {
-		dispatch({ type: ChatAction.TOGGLE_THEME });
+		onThemeChange(!isDarkMode);
 	};
 
 	const handleServiceChange = (event: SelectChangeEvent<string>) => {

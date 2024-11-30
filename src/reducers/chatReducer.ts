@@ -12,7 +12,6 @@ export interface ChatState {
 	currentChatIndex: number;
 	inputMessage: string;
 	isLoading: boolean;
-	isDarkMode: boolean;
 }
 
 export type ChatActionType =
@@ -20,7 +19,6 @@ export type ChatActionType =
 	| { type: 'ADD_USER_MESSAGE'; payload: string }
 	| { type: 'ADD_BOT_MESSAGE'; payload: string }
 	| { type: 'UPDATE_LAST_BOT_MESSAGE'; payload: string }
-	| { type: 'TOGGLE_THEME' }
 	| { type: 'ADD_NEW_CHAT' }
 	| { type: 'SELECT_CHAT'; payload: number }
 	| { type: 'CHANGE_SERVICE'; payload: ServiceType };
@@ -30,7 +28,6 @@ export const ChatAction = {
 	ADD_USER_MESSAGE: 'ADD_USER_MESSAGE',
 	ADD_BOT_MESSAGE: 'ADD_BOT_MESSAGE',
 	UPDATE_LAST_BOT_MESSAGE: 'UPDATE_LAST_BOT_MESSAGE',
-	TOGGLE_THEME: 'TOGGLE_THEME',
 	ADD_NEW_CHAT: 'ADD_NEW_CHAT',
 	SELECT_CHAT: 'SELECT_CHAT',
 	CHANGE_SERVICE: 'CHANGE_SERVICE'
@@ -40,8 +37,7 @@ export const initialState: ChatState = {
 	chatList: [{ name: 'Chat 1', messages: [], selectedService: 'openai' }],
 	currentChatIndex: 0,
 	inputMessage: '',
-	isLoading: false,
-	isDarkMode: false
+	isLoading: false
 };
 
 export function chatReducer(state: ChatState, action: ChatActionType): ChatState {
@@ -88,8 +84,6 @@ export function chatReducer(state: ChatState, action: ChatActionType): ChatState
 						: chat
 				)
 			};
-		case ChatAction.TOGGLE_THEME:
-			return { ...state, isDarkMode: !state.isDarkMode };
 		case ChatAction.ADD_NEW_CHAT:
 			return {
 				...state,
