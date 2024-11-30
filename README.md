@@ -87,7 +87,8 @@ A modern, responsive chat application built with React, TypeScript, and Material
 1. Clone the repository:
 
 bash
-git clone [https://github.com/sitay0490/chatbot.git]
+git clone https://github.com/sitay0490/chatbot.git
+
 cd ai-chat-app
 
 2. Install dependencies:
