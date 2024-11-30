@@ -78,7 +78,7 @@ export const mobileDrawerStyle: SxProps<Theme> = {
 
 export const messageListMainStyle = (message: MessageType): SxProps<Theme> => ({
 	display: 'flex',
-	justifyContent: message.type === 'user' ? 'flex-end' : 'flex-start',
+	justifyContent: message.type === 'user' ? 'flex-start' : 'flex-end',
 	padding: { xs: 0.5, sm: 1 }
 });
 
