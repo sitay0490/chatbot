@@ -87,7 +87,7 @@ A modern, responsive chat application built with React, TypeScript, and Material
 1. Clone the repository:
 
 bash
-git clone [repository-url]
+git clone [https://github.com/sitay0490/chatbot.git]
 cd ai-chat-app
 
 2. Install dependencies:
@@ -97,23 +97,8 @@ npm install
 
 env
 VITE_OPENAI_API_KEY=your_openai_key
+
 VITE_ANTHROPIC_API_KEY=your_anthropic_key
-
-### 📝 Usage
-
-- 🔄 Select AI provider from the dropdown
-- ➕ Start a new chat or continue existing ones
-- 💬 Type messages and receive AI responses
-- 🌓 Toggle between light/dark themes
-- 📱 Use mobile-friendly interface on smaller screens
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
 
 ## 📄 License
 
