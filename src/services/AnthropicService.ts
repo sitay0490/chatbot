@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { ChatService } from './ChatService';
+import { MessageParam } from '@anthropic-ai/sdk/resources/messages.mjs';
 
 export class AnthropicService extends ChatService {
 	private static instance: AnthropicService;
@@ -17,31 +18,34 @@ export class AnthropicService extends ChatService {
 		return AnthropicService.instance;
 	}
 
-	async getResponse(messages: { role: string; content: string }[]): Promise<string> {
+	async getResponse(messages: { role: 'user' | 'assistant'; content: string }[]): Promise<string> {
 		try {
-			// Ensure the prompt starts with the required format for Anthropic API
-			let formattedMessages = '\n\nHuman:';
+			const formattedMessages: MessageParam[] = messages.map((msg) => ({
+				role: msg.role as 'user' | 'assistant',
+				content: msg.content
+			}));
 
-			// Iterate over messages to construct the prompt
-			for (const msg of messages) {
-				if (msg.role === 'user') {
-					formattedMessages += `\n\nHuman: ${msg.content}`;
-				} else if (msg.role === 'assistant') {
-					formattedMessages += `\n\nAssistant: ${msg.content}`;
-				}
-			}
-
-			// Add the required ending prompt for the assistant to respond
-			formattedMessages += `\n\nAssistant:`;
-
-			const response = await this.anthropic.completions.create({
-				model: 'claude-2',
-				prompt: formattedMessages,
-				max_tokens_to_sample: 300,
-				temperature: 0.7
+			const response = await this.anthropic.messages.create({
+				model: 'claude-3-5-sonnet-20241022',
+				max_tokens: 1024,
+				messages: formattedMessages
 			});
 
-			return response.completion || 'No response from Anthropic';
+			const contentBlocks = response.content;
+			const responseText = contentBlocks
+				.map((block) => {
+					if ('text' in block) {
+						return block.text;
+					} else if ('image' in block) {
+						return '[Image Block]';
+					} else if ('toolUse' in block) {
+						return '[Tool Use Block]';
+					}
+					return '';
+				})
+				.join(' ');
+
+			return responseText || 'No response from Anthropic';
 		} catch (error) {
 			return 'Error in Anthropic response';
 		}

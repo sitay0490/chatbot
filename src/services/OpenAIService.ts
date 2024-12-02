@@ -17,9 +17,10 @@ export class OpenAIService extends ChatService {
 		return OpenAIService.instance;
 	}
 
-	async getResponse(messages: { role: string; content: string }[]): Promise<string> {
+	async getResponse(
+		messages: { role: 'user' | 'assistant' | 'system'; content: string }[]
+	): Promise<string> {
 		try {
-			// Format the messages array to match the OpenAI expected structure
 			const formattedMessages = messages.map((msg) => ({
 				role: msg.role as 'user' | 'assistant' | 'system',
 				content: msg.content

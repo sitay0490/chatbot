@@ -33,7 +33,7 @@ const InputSection: React.FC<InputSectionProps> = ({
 				maxRows={4}
 				value={inputMessage}
 				onChange={(e) => setInputMessage(e.target.value)}
-				onKeyPress={handleKeyPress}
+				onKeyDown={handleKeyPress}
 				placeholder="Type your message..."
 				variant="outlined"
 				size="small"
